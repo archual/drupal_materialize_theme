@@ -1,0 +1,2 @@
+# drupal_materialize_theme
+drupal_materialize_theme
