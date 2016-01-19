@@ -1,0 +1,50 @@
+{#
+/**
+ * @file
+ * bootstrap-panel.html.twig
+ *
+ * Markup for Bootstrap panels ([collapsible] fieldsets).
+ */
+
+#}
+
+{%
+set classes = [
+  'panel',
+  'panel-default',
+  'form-wrapper',
+  form_inline ? 'form-inline',
+  required ? 'form-required',
+  collapsible ? 'collapsible',
+  collapsed ? 'collapsed',
+]
+%}
+<fieldset{{ attributes.addClass(classes) }}>
+  {% if title %}
+    {% if collapsible %}
+      <legend class="panel-heading">
+        <a href="#" class="panel-title fieldset-legend" data-toggle="collapse" data-target="{{ target }}">
+          <span class="fieldset-legend-prefix visually-hidden">Show</span>{{ title }}
+        </a>
+      </legend>
+    {% else %}
+      <legend class="panel-heading">
+        <span class="panel-title fieldset-legend">{{ title }}</span>
+      </legend>
+    {% endif %}
+  {% endif %}
+  {% if collapsible %}
+    <div class="panel-collapse collapse fade {{ collapsed == false ? 'in' : '' }}">
+  {% endif %}
+  <div class="panel-body">
+    {% if description %}
+      <div class="help-block">{{ description }}</div>
+    {% endif %}
+    {% if children %}
+      {{ children }}
+    {% endif %}
+  </div>
+  {% if collapsible %}
+    </div>
+  {% endif %}
+</fieldset>
