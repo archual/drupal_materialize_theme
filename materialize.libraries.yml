@@ -5,6 +5,8 @@ global-styling:
       css/materialize.min.css: { weight: -10 }
     modules:
       css/drupal-toolbar.css: { weight: -10 }
+    fonts:
+      'https://fonts.googleapis.com/icon?family=Material+Icons': { type: external }
 
 global-scripts:
   js:
