@@ -1,6 +1,6 @@
 {
-  "name": "drupal-bootstrap",
-  "version": "7.3.0-dev",
+  "name": "drupal-materialize",
+  "version": "8.0-dev",
   "private": true,
   "devDependencies": {
     "bower": "~1.3.0",

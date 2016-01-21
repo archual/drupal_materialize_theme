@@ -1,0 +1,20 @@
+/*!
+ * Reset styles for drupal toolbar module.
+ */
+
+.toolbar-vertical nav,
+.toolbar-tray-open nav {
+  background-color: #fff;
+  height: auto;
+  line-height: normal;
+}
+
+.toolbar-vertical nav ul li,
+.toolbar-tray-open nav ul li {
+  float: none;
+}
+
+.toolbar-vertical nav ul li a,
+.toolbar-tray-open nav ul li a {
+  font-size: small;
+}

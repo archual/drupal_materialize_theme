@@ -1,27 +1,18 @@
 <!-- @file Project Page -->
-# Bootstrap
+# Materialize
 
-> Sleek, intuitive, and powerful mobile first front-end framework for faster and
-> easier web development. Bootstrap has become one of the most popular front-end
-> frameworks and open source projects in the world.
+> A modern responsive front-end framework based on Material Design. Materialize 
+> simplifies life for developers and the users they serve.
+> Created and designed by Google, Material Design is a design language that 
+> combines the classic principles of successful design along with innovation 
+> and technology. Google's goal is to develop a system of design that allows 
+> for a unified user experience across all their products on any platform.
 
-This base theme bridges the gap between Drupal and the [Bootstrap Framework].
+This base theme bridges the gap between Drupal and the [Materialize Framework](http://materializecss.com/).
 
 ### Features
-- [jsDelivr CDN](http://www.jsdelivr.com) for "out-of-the-box" styling and
-  faster page load times.
-- [Bootswatch](http://bootswatch.com) theme support, if using the CDN.
-- Glyphicons support via [Icon API](https://www.drupal.org/project/icon).
-- Extensive integration and template/preprocessor overrides for most of the
-  [Bootstrap Framework] CSS, Components and JavaScript
-- Theme settings to further enhance the Drupal Bootstrap integration:
-  - [Breadcrumbs](http://getbootstrap.com/components/#breadcrumbs)
-  - [Navbar](http://getbootstrap.com/components/#navbar)
-  - [Popovers](http://getbootstrap.com/javascript/#popovers)
-  - [Tooltips](http://getbootstrap.com/javascript/#tooltips)
-  - [Wells](http://getbootstrap.com/components/#wells) (per region)
 
 ### Documentation
-See our dedicated [documentation site](http://drupal-bootstrap.org).
+See our dedicated [documentation site](http://drupal-materialize.org).
 
-[Bootstrap Framework]: http://getbootstrap.com
+[Materialize Framework]: http://materializecss.com/

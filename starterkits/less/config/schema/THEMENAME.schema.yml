@@ -1,4 +1,0 @@
-# Schema for the configuration files for the THEMENAME theme.
-THEMENAME.settings:
-  type: theme_settings
-  label: 'Bootstrap Sub-Theme Settings'

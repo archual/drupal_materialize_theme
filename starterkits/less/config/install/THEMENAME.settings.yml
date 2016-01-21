@@ -1,2 +1,0 @@
-# Disable the CDN provider so compiled LESS source files can be used.
-bootstrap_cdn_provider: ''
