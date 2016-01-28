@@ -61,18 +61,32 @@
  * @ingroup themeable
  */
 #}
-<nav aria-label="{{ 'Site header'|t}}">
-  <div class="nav-wrapper">
-    {{ page.header }}
-    <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-    <div class="right hide-on-med-and-down">
-      {{ primary_nav }}
-    </div>
-    <div class="side-nav" id="mobile-demo">
-      {{ mobile_nav }}
-    </div>
+
+{% if navbar_attributes %}
+  <div {{ navbar_attributes }}>
+{% endif %}
+    <nav role="navigation" aria-label="{{ 'Site header'|t}}">
+      <div class="nav-wrapper container">
+        {{ logo }}
+        {% if page.header %}
+            {{ page.header }}
+        {% endif %}
+        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+        <div class="right hide-on-med-and-down">
+          {% if page.primary_nav %}
+            {{ page.primary_nav }}
+          {% endif %}
+        </div>
+        <div class="side-nav" id="nav-mobile">
+          {% if page.mobile_nav %}
+            {{ page.mobile_nav }}
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+{% if navbar_attributes %}
   </div>
-</nav>
+{% endif %}
 
 <div class="container js-quickedit-main-content">
     {% if page.sidebar_first %}
@@ -81,7 +95,7 @@
       </aside>  <!-- End first aside. -->
     {% endif %}
 
-    <section{{ content_column_attributes }}>
+    <section {{ content_column_attributes }}>
       {% if page.highlighted %}
         <div class="highlighted">{{ page.highlighted }}</div>
       {% endif %}

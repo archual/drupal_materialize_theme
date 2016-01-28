@@ -1,0 +1,99 @@
+<?php
+/**
+ * @file
+ * template.php
+ *
+ * This file should only contain light helper functions and stubs pointing to
+ * other files containing more complex functions.
+ *
+ * The stubs should point to files within the `theme` folder named after the
+ * function itself minus the theme prefix. If the stub contains a group of
+ * functions, then please organize them so they are related in some way and name
+ * the file appropriately to at least hint at what it contains.
+ *
+ * All [pre]process functions, theme functions and template implementations also
+ * live in the 'theme' folder. This is a highly automated and complex system
+ * designed to only load the necessary files when a given theme hook is invoked.
+ * @see _bootstrap_theme()
+ * @see ./includes/registry.inc
+ *
+ * Due to a bug in Drush, these includes must live inside the 'theme' folder
+ * instead of something like 'includes'. If a module or theme has an 'includes'
+ * folder, Drush will think it is trying to bootstrap core when it is invoked
+ * from inside the particular extension's directory.
+ * @see https://drupal.org/node/2102287
+ */
+
+use Drupal\Core\Template\Attribute;
+use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * @see page.tpl.php
+ */
+function materialize_preprocess_page(&$variables) {
+  // Add information about the number of sidebars.
+  $variables['content_column_attributes'] = new Attribute();
+  $variables['content_column_attributes']['class'] = array();
+  if (!empty($variables['page']['sidebar_first']) && !empty($variables['page']['sidebar_second'])) {
+    $variables['content_column_attributes']['class'][] = 'col-s6';
+  }
+  elseif (!empty($variables['page']['sidebar_first']) || !empty($variables['page']['sidebar_second'])) {
+    $variables['content_column_attributes']['class'][] = 'col-s9';
+  }
+  else {
+    $variables['content_column_attributes']['class'][] = 'col-s12';
+  }
+
+  $variables['content_column_attributes']['class'][] = 'col-s12';
+
+
+  // Settings for fixed navbar.
+//  if (materialize_setting('navbar_position') === 'fixed') {
+//    $variables['navbar_attributes'] = new Attribute();
+//    $variables['navbar_attributes']['class'] = array('navbar-fixed');
+//  }
+  $variables['navbar_attributes'] = new Attribute();
+  $variables['navbar_attributes']['class'] = array('navbar-fixed');
+
+  // Logo.
+//  $variables['logo'] = '<a href="/">Your browser does not support SVG</object></a>';
+
+  $url =  Url::fromUri('http://getbootstrap.com/css/#buttons');
+  $link_options = array(
+    'attributes' => array(
+      'class' => array(
+        'brand-logo'
+      ),
+      'html' => true,
+    ),
+  );
+
+  $url->setOptions($link_options);
+  $variables['logo'] = \Drupal::l(t('<object data="/themes/materialize/logo.svg" id="front-page-logo" type="image/svg+xml">Your browser does not support SVG'), $url);
+
+  // Primary nav.
+  $menu_tree = \Drupal::menuTree();
+  // Render the top-level administration menu links.
+  $parameters = new MenuTreeParameters();
+  $tree = $menu_tree->load('main', $parameters);
+  $manipulators = array(
+    array('callable' => 'menu.default_tree_manipulators:checkAccess'),
+    array('callable' => 'menu.default_tree_manipulators:generateIndexAndSort'),
+  );
+  $tree = $menu_tree->transform($tree, $manipulators);
+  $variables['primary_nav'] = $menu_tree->build($tree);
+  $variables['primary_nav']['#attributes']['class'][] = 'navbar-nav';
+
+  // Primary nav.
+  $menu_tree = \Drupal::menuTree();
+  // Render the top-level administration menu links.
+  $parameters = new MenuTreeParameters();
+  $tree = $menu_tree->load('account', $parameters);
+  $variables['secondary_nav'] = $menu_tree->build($tree);
+  $variables['secondary_nav']['#attributes']['class'][] = 'navbar-nav';
+  $variables['secondary_nav']['#attributes']['class'][] = 'secondary';
+}
+

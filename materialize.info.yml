@@ -5,6 +5,9 @@ package: Materialize
 core: 8.x
 version: VERSION
 regions:
+  header: 'Page header'
+  primary_nav: 'Primary navigation'
+  mobile_nav: 'Mobile navigation'
   navigation: 'Navigation'
   header: 'Top Bar'
   highlighted: 'Highlighted'
