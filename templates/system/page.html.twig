@@ -71,13 +71,27 @@
         {% if page.header %}
             {{ page.header }}
         {% endif %}
-        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
         <div class="right hide-on-med-and-down">
+          {# Render sample data. #}
+          <ul>
+            <li>{{ user_page }}</li>
+            <li>{{ user_logout }}</li>
+          </ul>
+          {# End render of sample data. #}
+
           {% if page.primary_nav %}
             {{ page.primary_nav }}
           {% endif %}
         </div>
         <div class="side-nav" id="nav-mobile">
+          {# Render sample data. #}
+          <ul>
+            <li>{{ user_page }}</li>
+            <li>{{ user_logout }}</li>
+          </ul>
+          {# End render of sample data. #}
+
           {% if page.mobile_nav %}
             {{ page.mobile_nav }}
           {% endif %}

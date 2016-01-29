@@ -51,49 +51,58 @@ function materialize_preprocess_page(&$variables) {
 
 
   // Settings for fixed navbar.
+  // @TODO Realize theme settings.
 //  if (materialize_setting('navbar_position') === 'fixed') {
 //    $variables['navbar_attributes'] = new Attribute();
 //    $variables['navbar_attributes']['class'] = array('navbar-fixed');
 //  }
-  $variables['navbar_attributes'] = new Attribute();
-  $variables['navbar_attributes']['class'] = array('navbar-fixed');
 
   // Logo.
-//  $variables['logo'] = '<a href="/">Your browser does not support SVG</object></a>';
-
-  $url =  Url::fromUri('http://getbootstrap.com/css/#buttons');
+  $url = Url::fromRoute('<front>');
   $link_options = array(
     'attributes' => array(
       'class' => array(
         'brand-logo'
       ),
-      'html' => true,
     ),
   );
 
   $url->setOptions($link_options);
-  $variables['logo'] = \Drupal::l(t('<object data="/themes/materialize/logo.svg" id="front-page-logo" type="image/svg+xml">Your browser does not support SVG'), $url);
+  $variables['logo'] = \Drupal::l(t('Logo'), $url);
 
-  // Primary nav.
-  $menu_tree = \Drupal::menuTree();
-  // Render the top-level administration menu links.
-  $parameters = new MenuTreeParameters();
-  $tree = $menu_tree->load('main', $parameters);
-  $manipulators = array(
-    array('callable' => 'menu.default_tree_manipulators:checkAccess'),
-    array('callable' => 'menu.default_tree_manipulators:generateIndexAndSort'),
-  );
-  $tree = $menu_tree->transform($tree, $manipulators);
-  $variables['primary_nav'] = $menu_tree->build($tree);
-  $variables['primary_nav']['#attributes']['class'][] = 'navbar-nav';
+  // User nav.
+  // User page.
+  $url = Url::fromRoute('user.page');
+  $variables['user_page'] = \Drupal::l(t('<i class="small left material-icons">perm_identity</i>' . 'Account'), $url);
 
-  // Primary nav.
-  $menu_tree = \Drupal::menuTree();
-  // Render the top-level administration menu links.
-  $parameters = new MenuTreeParameters();
-  $tree = $menu_tree->load('account', $parameters);
-  $variables['secondary_nav'] = $menu_tree->build($tree);
-  $variables['secondary_nav']['#attributes']['class'][] = 'navbar-nav';
-  $variables['secondary_nav']['#attributes']['class'][] = 'secondary';
+  // Log in/log out.
+  // @TODO Change on system menu user link (log in/log out).
+  $url = Url::fromRoute('user.logout');
+  $variables['user_logout'] = \Drupal::l(t('<i class="small left material-icons">open_in_new</i>' . 'Log out'), $url);
 }
 
+/**
+ * Implements hook_preprocess_breadcrumb().
+ */
+function materialize_preprocess_breadcrumb(&$variables) {
+  $breadcrumb = &$variables['breadcrumb'];
+
+  // Optionally get rid of the homepage link.
+//  $show_breadcrumb_home = bootstrap_setting('breadcrumb_home');
+//  if (!$show_breadcrumb_home) {
+//    array_shift($breadcrumb);
+//  }
+
+//  if (bootstrap_setting('breadcrumb_title') && !empty($breadcrumb)) {
+//    $request = \Drupal::request();
+//    $route_match = \Drupal::routeMatch();
+//    $page_title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
+//
+//    if (!empty($page_title)) {
+//      $breadcrumb[] = array(
+//        'text' => $page_title,
+//        'attributes' => new Attribute(array('class' => array('active'))),
+//      );
+//    }
+//  }
+}
