@@ -3,6 +3,7 @@ global-styling:
   css:
     theme:
       css/materialize.min.css: { weight: -10 }
+      css/drupal-materialize.css: { weight: -10 }
     modules:
       css/drupal-toolbar.css: { weight: -10 }
     fonts:
@@ -10,7 +11,8 @@ global-styling:
 
 global-scripts:
   js:
-    js/materialize.min.js: {}
+    js/materialize.js: {}
+    js/materialize-init.js: {}
 
   dependencies:
     - core/jquery
