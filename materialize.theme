@@ -51,11 +51,10 @@ function materialize_preprocess_page(&$variables) {
 
 
   // Settings for fixed navbar.
-  // @TODO Realize theme settings.
-//  if (materialize_setting('navbar_position') === 'fixed') {
-//    $variables['navbar_attributes'] = new Attribute();
-//    $variables['navbar_attributes']['class'] = array('navbar-fixed');
-//  }
+  if ( theme_get_setting('navbar_position') === 1) {
+    $variables['navbar_attributes'] = new Attribute();
+    $variables['navbar_attributes']['class'] = array('navbar-fixed');
+  }
 
   // Logo.
   $url = Url::fromRoute('<front>');
