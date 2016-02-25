@@ -51,7 +51,7 @@ function materialize_preprocess_page(&$variables) {
 
 
   // Settings for fixed navbar.
-  if ( theme_get_setting('navbar_position') === 1) {
+  if ( theme_get_setting('fixed_header') === 1) {
     $variables['navbar_attributes'] = new Attribute();
     $variables['navbar_attributes']['class'] = array('navbar-fixed');
   }
@@ -87,21 +87,20 @@ function materialize_preprocess_breadcrumb(&$variables) {
   $breadcrumb = &$variables['breadcrumb'];
 
   // Optionally get rid of the homepage link.
-//  $show_breadcrumb_home = bootstrap_setting('breadcrumb_home');
-//  if (!$show_breadcrumb_home) {
-//    array_shift($breadcrumb);
-//  }
+  $show_breadcrumb_home = theme_get_setting('breadcrumbs_home');
+  if (!$show_breadcrumb_home) {
+    array_shift($breadcrumb);
+  }
 
-//  if (bootstrap_setting('breadcrumb_title') && !empty($breadcrumb)) {
-//    $request = \Drupal::request();
-//    $route_match = \Drupal::routeMatch();
-//    $page_title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
-//
-//    if (!empty($page_title)) {
-//      $breadcrumb[] = array(
-//        'text' => $page_title,
-//        'attributes' => new Attribute(array('class' => array('active'))),
-//      );
-//    }
-//  }
+  if (theme_get_setting('breadcrumbs_title') && !empty($breadcrumb)) {
+    $request = \Drupal::request();
+    $route_match = \Drupal::routeMatch();
+    $page_title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
+
+    if (!empty($page_title)) {
+      $breadcrumb[] = array(
+        'text' => $page_title,
+      );
+    }
+  }
 }

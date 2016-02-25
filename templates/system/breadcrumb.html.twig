@@ -10,15 +10,17 @@
  */
 #}
 {% if breadcrumb %}
-  <ol class="breadcrumb">
-    {% for item in breadcrumb %}
-      <li {{ item.attributes }}>
-        {% if item.url %}
-          <a href="{{ item.url }}">{{ item.text }}</a>
-        {% else %}
-          {{ item.text }}
-        {% endif %}
-      </li>
-    {% endfor %}
-  </ol>
+  <nav class="breadcrumbs">
+    <div class="nav-wrapper">
+      <div class="col s12">
+        {% for item in breadcrumb %}
+          {% if item.url %}
+            <a href="{{ item.url }}" class="breadcrumb">{{ item.text }}</a>
+          {% else %}
+            <span class="breadcrumb">{{ item.text }}</span>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </nav>
 {% endif %}
