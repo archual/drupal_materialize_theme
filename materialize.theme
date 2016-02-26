@@ -37,6 +37,7 @@ function materialize_preprocess_page(&$variables) {
   // Add information about the number of sidebars.
   $variables['content_column_attributes'] = new Attribute();
   $variables['content_column_attributes']['class'] = array();
+
   if (!empty($variables['page']['sidebar_first']) && !empty($variables['page']['sidebar_second'])) {
     $variables['content_column_attributes']['class'][] = 'col-s6';
   }
@@ -46,9 +47,6 @@ function materialize_preprocess_page(&$variables) {
   else {
     $variables['content_column_attributes']['class'][] = 'col-s12';
   }
-
-  $variables['content_column_attributes']['class'][] = 'col-s12';
-
 
   // Settings for fixed navbar.
   if ( theme_get_setting('fixed_header') === 1) {
