@@ -1,3 +1,19 @@
+# Buttons size
+#---------------
+button_size: btn
+
+# Breadcrumbs
+#---------------
+breadcrumbs: 1
+
+# Breadcrumbs home
+# --------------
+breadcrumbs_home: TRUE
+
+# Breadcrumbs title
+# --------------
+breadcrumbs_title: TRUE
+
 # Navbar position
 # --------------
 fixed_header: 0

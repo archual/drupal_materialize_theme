@@ -41,6 +41,23 @@ function materialize_form_system_theme_settings_alter(&$form, FormStateInterface
     '#group' => 'materialize',
   );
 
+  // Buttons.
+  $form['general']['buttons'] = array(
+    '#type' => 'details',
+    '#title' => t('Buttons'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['general']['buttons']['button_size'] = array(
+    '#type' => 'select',
+    '#title' => t('Default button size'),
+    '#default_value' => theme_get_setting('button_size', $theme),
+    '#options' => array(
+      'btn' => t('Normal'),
+      'btn-large' => t('Large'),
+    ),
+  );
+
   // Components.
   $form['components'] = array(
     '#type' => 'details',
