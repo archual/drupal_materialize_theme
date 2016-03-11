@@ -23,5 +23,11 @@ var Drupal = Drupal || {};
       });
     }
   };
+  Drupal.behaviors.initSelectFields = {
+    attach: function (context) {
+      $('select').once().material_select();
+    }
+  };
+
 
 })(jQuery, Drupal, drupalSettings);
