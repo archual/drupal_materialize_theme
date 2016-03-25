@@ -1,7 +1,27 @@
 /*!
  * Override standard materialized theme css.
  */
+html,
+body {
+  outline: none;
+}
+
+html:focus,
+body:focus {
+  outline: none;
+}
+
+.picker__holder {
+  outline: none;
+}
 
 .breadcrumbs {
   padding: 0 0.75rem;
+}
+
+.field--type-text-with-summary label,
+.form-type-managed-file label {
+  display: block;
+  margin-bottom: 10px;
+  position: static;
 }

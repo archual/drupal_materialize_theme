@@ -163,11 +163,13 @@ function materialize_preprocess_input(&$variables) {
  *     #multiple, #required, #name, #attributes, #size.
  */
 function materialize_preprocess_select(&$variables) {
+  // @TODO: Doesn't work.
   $element = $variables['element'];
   $variables['attributes']['class'][] = 'form-control';
 }
 
 function _materialize_prerender_input(&$variables) {
+  // @TODO Need add class active for label, which input field already has value.
   $element = $variables['element'];
   $type = $element['#type'];
 
