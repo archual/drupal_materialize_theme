@@ -19,9 +19,139 @@ body:focus {
   padding: 0 0.75rem;
 }
 
-.field--type-text-with-summary label,
+.input-field label {
+  left: 0;
+}
+
+button {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+button:hover {
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+button {
+  border: none;
+  border-radius: 2px;
+  display: inline-block;
+  height: 36px;
+  line-height: 36px;
+  outline: 0;
+  padding: 0 2rem;
+  text-transform: uppercase;
+  vertical-align: middle;
+  -webkit-tap-highlight-color: transparent;
+
+  text-decoration: none;
+  color: #fff;
+  background-color: #26a69a;
+  text-align: center;
+  letter-spacing: .5px;
+  transition: .2s ease-out;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #2bbbad;
+}
+
+button.disabled {
+  background-color: #DFDFDF !important;
+  box-shadow: none;
+  color: #9F9F9F !important;
+  cursor: default;
+}
+
+button.disabled:hover {
+  background-color: #DFDFDF;
+  color: #9F9F9F;
+}
+
+textarea {
+  height: auto;
+}
+
+.input-field label {
+  top: 2rem;
+}
+
+.input-field label.active {
+  top: 2.5rem;
+}
+
+input:not([type]),
+input[type=text],
+input[type=password],
+input[type=email],
+input[type=url],
+input[type=time],
+input[type=date],
+input[type=datetime-local],
+input[type=tel],
+input[type=number],
+input[type=search],
+textarea.materialize-textarea {
+  height: 2rem;
+  margin: 0 0 8px 0;
+  padding-top: 27px;
+}
+
+.select-wrapper {
+  padding-top: 27px;
+}
+
+.select-wrapper+label {
+  top: 0.5rem;
+}
+
+.select-wrapper span.caret {
+  top: 3rem;
+}
+
+.form-type-textarea label,
 .form-type-managed-file label {
   display: block;
   margin-bottom: 10px;
   position: static;
+}
+
+.field--type-text-with-summary .filter-wrapper .form-type-select {
+  clear: both;
+}
+
+.js input.form-autocomplete {
+  background-position: 100% 80%;
+}
+
+table {
+  margin-bottom: 8px;
+}
+
+tr {
+  border-bottom: 1px solid #d0d0d0;
+}
+
+td,
+th {
+  padding: 10px;
+}
+
+td .input-field {
+  margin-top: 0;
+}
+
+td input:not([type]),
+td input[type=text],
+td input[type=password],
+td input[type=email],
+td input[type=url],
+td input[type=time],
+td input[type=date],
+td input[type=datetime-local],
+td input[type=tel],
+td input[type=number],
+td input[type=search],
+td textarea.materialize-textarea {
+  padding-top: 0;
 }

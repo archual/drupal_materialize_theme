@@ -145,27 +145,23 @@ function materialize_preprocess_input(&$variables) {
   // Additional Twig variables.
   $variables['icon'] = $element['#icon'];
   $variables['element'] = $element;
+
+  $variables['label_display'] = 'after';
+  $variables['element']['#title_display'] = 'after';
 }
 
 /**
- * Prepares variables for select element templates.
- *
- * Default template: select.html.twig.
- *
- * It is possible to group options together; to do this, change the format of
- * $options to an associative array in which the keys are group labels, and the
- * values are associative arrays in the normal $options format.
- *
- * @param $variables
- *   An associative array containing:
- *   - element: An associative array containing the properties of the element.
- *     Properties used: #title, #value, #options, #description, #extra,
- *     #multiple, #required, #name, #attributes, #size.
+ * @file
+ * hook_preprocess_input
  */
-function materialize_preprocess_select(&$variables) {
-  // @TODO: Doesn't work.
-  $element = $variables['element'];
-  $variables['attributes']['class'][] = 'form-control';
+function materialize_preprocess_form_element(&$variables) {
+  switch ($variables['element']['#type']) {
+    case 'select':
+    case 'textfield':
+      $element = $variables['element'];
+      $variables['label_display'] = $element['#title_display'] == 'before' ? 'after' : $element['#title_display'];
+      break;
+  }
 }
 
 function _materialize_prerender_input(&$variables) {
@@ -201,6 +197,10 @@ function _materialize_prerender_input(&$variables) {
   if ($type == 'date') {
     $variables['attributes']['class'][] = 'datepicker';
   }
+
+  // Move label bottom for select, text area with summary and others.
+  // Add label_display and label variables to template.
+  $variables['label_display'] = $element['#title_display'];
 
   if (!empty($type) && (in_array($type, $types) ||
       ($type === 'file' && empty($element['#managed_file'])))) {

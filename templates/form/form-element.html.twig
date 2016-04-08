@@ -77,7 +77,7 @@
     </div>
   {% endif %}
   {{ children }}
-  {% if label_display == 'after' %}
+  {% if label_display in ['after', 'invisible'] %}
     {{ label }}
   {% endif %}
   {% if suffix is not empty %}
