@@ -7,11 +7,11 @@
 namespace Drupal\materialize;
 
 //use Drupal\bootstrap\Plugin\ProviderManager;
-//use Drupal\bootstrap\Plugin\SettingManager;
+use Drupal\materialize\Plugin\SettingManager;
 //use Drupal\bootstrap\Plugin\UpdateManager;
 //use Drupal\bootstrap\Utility\Crypt;
-//use Drupal\bootstrap\Utility\Storage;
-//use Drupal\bootstrap\Utility\StorageItem;
+use Drupal\materialize\Utility\Storage;
+use Drupal\materialize\Utility\StorageItem;
 use Drupal\Core\Extension\Extension;
 use Drupal\Core\Extension\ThemeHandlerInterface;
 
@@ -203,7 +203,7 @@ class Theme {
   }
 
   /**
-   * Installs a Bootstrap based theme.
+   * Installs a Materialize based theme.
    */
   final protected function install() {
     $update_manager = new UpdateManager($this);
@@ -258,5 +258,31 @@ class Theme {
    */
   public function subthemeOf($theme) {
     return (string) $theme === $this->getName() || in_array($theme, array_keys(self::getAncestry()));
+  }
+
+  /**
+   * Retrieves an individual item from a theme's cache in the database.
+   *
+   * @param string $name
+   *   The name of the item to retrieve from the theme cache.
+   * @param mixed $default
+   *   The default value to use if $name does not exist.
+   *
+   * @return mixed|\Drupal\materialize\Utility\StorageItem
+   *   The cached value for $name.
+   */
+  public function getCache($name, $default = []) {
+    static $cache = [];
+    $theme = $this->getName();
+    $theme_cache = self::getStorage();
+    if (!isset($cache[$theme][$name])) {
+      $value = $theme_cache->get($name);
+      if (!isset($value)) {
+        $value  = is_array($default) ? new StorageItem($default, $theme_cache) : $default;
+        $theme_cache->set($name, $value);
+      }
+      $cache[$theme][$name] = $value;
+    }
+    return $cache[$theme][$name];
   }
 }

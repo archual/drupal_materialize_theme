@@ -21,6 +21,13 @@ use Drupal\Core\Extension\ThemeHandlerInterface;
  */
 class Materialize {
   /**
+   * Tag used to invalidate caches.
+   *
+   * @var string
+   */
+  const CACHE_TAG = 'theme_registry';
+
+  /**
    * Retrieves a theme instance of \Drupal\materialize.
    *
    * @param string $name

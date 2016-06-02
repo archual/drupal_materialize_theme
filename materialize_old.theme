@@ -1,0 +1,229 @@
+<?php
+/**
+ * @file
+ * template.php
+ *
+ * This file should only contain light helper functions and stubs pointing to
+ * other files containing more complex functions.
+ *
+ * The stubs should point to files within the `theme` folder named after the
+ * function itself minus the theme prefix. If the stub contains a group of
+ * functions, then please organize them so they are related in some way and name
+ * the file appropriately to at least hint at what it contains.
+ *
+ * All [pre]process functions, theme functions and template implementations also
+ * live in the 'theme' folder. This is a highly automated and complex system
+ * designed to only load the necessary files when a given theme hook is invoked.
+ * @see _bootstrap_theme()
+ * @see ./includes/registry.inc
+ *
+ * Due to a bug in Drush, these includes must live inside the 'theme' folder
+ * instead of something like 'includes'. If a module or theme has an 'includes'
+ * folder, Drush will think it is trying to bootstrap core when it is invoked
+ * from inside the particular extension's directory.
+ * @see https://drupal.org/node/2102287
+ */
+
+use Drupal\Core\Template\Attribute;
+use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * @see page.tpl.php
+ */
+function materialize_preprocess_page(&$variables) {
+  // Add information about the number of sidebars.
+  $variables['content_column_attributes'] = new Attribute();
+  $variables['content_column_attributes']['class'] = array();
+
+  if (!empty($variables['page']['sidebar_first']) && !empty($variables['page']['sidebar_second'])) {
+    $variables['content_column_attributes']['class'][] = 'col-s6';
+  }
+  elseif (!empty($variables['page']['sidebar_first']) || !empty($variables['page']['sidebar_second'])) {
+    $variables['content_column_attributes']['class'][] = 'col-s9';
+  }
+  else {
+    $variables['content_column_attributes']['class'][] = 'col-s12';
+  }
+
+  // Settings for fixed navbar.
+  if ( theme_get_setting('fixed_header') === 1) {
+    $variables['navbar_attributes'] = new Attribute();
+    $variables['navbar_attributes']['class'] = array('navbar-fixed');
+  }
+
+  // Logo.
+  $url = Url::fromRoute('<front>');
+  $link_options = array(
+    'attributes' => array(
+      'class' => array(
+        'brand-logo'
+      ),
+    ),
+  );
+
+  $url->setOptions($link_options);
+  $variables['logo'] = \Drupal::l(t('Logo'), $url);
+
+  // User nav.
+  // User page.
+  $url = Url::fromRoute('user.page');
+  $variables['user_page'] = \Drupal::l(t('<i class="small left material-icons">perm_identity</i>' . 'Account'), $url);
+
+  // Log in/log out.
+  // @TODO Change on system menu user link (log in/log out).
+  $url = Url::fromRoute('user.logout');
+  $variables['user_logout'] = \Drupal::l(t('<i class="small left material-icons">open_in_new</i>' . 'Log out'), $url);
+}
+
+/**
+ * Implements hook_preprocess_breadcrumb().
+ */
+function materialize_preprocess_breadcrumb(&$variables) {
+  $breadcrumb = &$variables['breadcrumb'];
+
+  // Optionally get rid of the homepage link.
+  $show_breadcrumb_home = theme_get_setting('breadcrumbs_home');
+  if (!$show_breadcrumb_home) {
+    array_shift($breadcrumb);
+  }
+
+  if (theme_get_setting('breadcrumbs_title') && !empty($breadcrumb)) {
+    $request = \Drupal::request();
+    $route_match = \Drupal::routeMatch();
+    $page_title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
+
+    if (!empty($page_title)) {
+      $breadcrumb[] = array(
+        'text' => $page_title,
+      );
+    }
+  }
+}
+
+/**
+ * @file
+ * hook_preprocess_input
+ */
+function materialize_preprocess_input(&$variables) {
+  $element = &$variables['element'];
+  $attributes = new Attribute($variables['attributes']);
+
+  // Set the element's attributes.
+  \Drupal\Core\Render\Element::setAttributes($element, array('id', 'name', 'value', 'type'));
+
+  // Remove empty placeholder attribute.
+  if (isset($variables['attributes']['placeholder']) && empty($variables['attributes']['placeholder'])) {
+    unset($variables['attributes']['placeholder']);
+  }
+
+  // Handle button inputs.
+  if (_materialize_is_button($element)) {
+    $variables['attributes']['class'][] = 'waves-effect';
+    $variables['attributes']['class'][] = 'waves-light';
+
+    // Add button size, if necessary.
+    $size = theme_get_setting('button_size');
+    $variables['attributes']['class'][] = $size;
+
+    // @TODO: For submit button. <i class="material-icons right">send</i>
+    // Add in the button type class.
+    $variables['attributes']['class'][] = 'form-' . $element['#type'];
+    $variables['label'] = $element['#value'];
+  }
+
+  _materialize_prerender_input($variables);
+
+  // Search fields.
+  if ($element['#type'] == 'search') {
+    $attributes['placeholder'] = t('Search');
+    $attributes['data-original-title'] = t('Enter the terms you wish to search for.');
+  }
+
+  // Additional Twig variables.
+  $variables['icon'] = $element['#icon'];
+  $variables['element'] = $element;
+
+  $variables['label_display'] = 'after';
+  $variables['element']['#title_display'] = 'after';
+}
+
+/**
+ * @file
+ * hook_preprocess_input
+ */
+function materialize_preprocess_form_element(&$variables) {
+  switch ($variables['element']['#type']) {
+    case 'select':
+    case 'textfield':
+      $element = $variables['element'];
+      $variables['label_display'] = $element['#title_display'] == 'before' ? 'after' : $element['#title_display'];
+      break;
+  }
+}
+
+function _materialize_prerender_input(&$variables) {
+  // @TODO Need add class active for label, which input field already has value.
+  $element = $variables['element'];
+  $type = $element['#type'];
+
+  // Only add the "form-control" class for specific element input types.
+  $types = array(
+    // Core.
+    'password',
+    'password_confirm',
+    'select',
+    'textfield',
+    'machine_name',
+    'entity_autocomplete',
+    // HTML5.
+    'email',
+    // Webform module.
+    'webform_email',
+    'webform_number',
+    // Elements module.
+    'date',
+    'color',
+    'email',
+    'number',
+    'range',
+    'search',
+    'tel',
+    'url',
+  );
+
+  if ($type == 'date') {
+    $variables['attributes']['class'][] = 'datepicker';
+  }
+
+  // Move label bottom for select, text area with summary and others.
+  // Add label_display and label variables to template.
+  $variables['label_display'] = $element['#title_display'];
+
+  if (!empty($type) && (in_array($type, $types) ||
+      ($type === 'file' && empty($element['#managed_file'])))) {
+    $variables['attributes']['class'][] = 'form-control';
+  }
+  return $variables;
+}
+
+/**
+ * Helper function for determining whether an element is a button.
+ *
+ * @param array $element
+ *   A renderable element.
+ *
+ * @return bool
+ *   TRUE or FALSE.
+ */
+function _materialize_is_button($element) {
+  return
+    !empty($element['#type']) &&
+    !empty($element['#value']) && (
+      $element['#type'] === 'button' ||
+      $element['#type'] === 'submit' ||
+      $element['#type'] === 'image_button'
+    );
+}
