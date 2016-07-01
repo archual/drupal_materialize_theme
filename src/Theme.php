@@ -6,10 +6,10 @@
 
 namespace Drupal\materialize;
 
-//use Drupal\bootstrap\Plugin\ProviderManager;
+//use Drupal\materialize\Plugin\ProviderManager;
 use Drupal\materialize\Plugin\SettingManager;
-//use Drupal\bootstrap\Plugin\UpdateManager;
-//use Drupal\bootstrap\Utility\Crypt;
+use Drupal\materialize\Plugin\UpdateManager;
+//use Drupal\materialize\Utility\Crypt;
 use Drupal\materialize\Utility\Storage;
 use Drupal\materialize\Utility\StorageItem;
 use Drupal\Core\Extension\Extension;
@@ -218,6 +218,26 @@ class Theme {
    */
   public function removeSetting($name) {
     $this->settings()->clear($name)->save();
+  }
+
+  /**
+   * Retrieves the full base/sub-theme ancestry of a theme.
+   *
+   * @param bool $reverse
+   *   Whether or not to return the array of themes in reverse order, where the
+   *   active theme is the first entry.
+   *
+   * @return \Drupal\bootstrap\Theme[]
+   *   An associative array of \Drupal\bootstrap objects (theme), keyed
+   *   by machine name.
+   */
+  public function getAncestry($reverse = FALSE) {
+    $ancestry = $this->themeHandler->getBaseThemes($this->themes, $this->getName());
+    foreach (array_keys($ancestry) as $name) {
+      $ancestry[$name] = Materialize::getTheme($name, $this->themeHandler);
+    }
+    $ancestry[$this->getName()] = $this;
+    return $reverse ? array_reverse($ancestry) : $ancestry;
   }
 
   /**

@@ -6,12 +6,12 @@
 
 namespace Drupal\materialize\Plugin;
 
-use Drupal\materialize\Bootstrap;
+use Drupal\materialize\Materialize;
 use Drupal\materialize\Theme;
 use Drupal\Core\Plugin\DefaultPluginManager;
 
 /**
- * Base class for Bootstrap plugin managers.
+ * Base class for Materialize plugin managers.
  *
  * @ingroup plugin_api
  */
@@ -95,7 +95,7 @@ class PluginManager extends DefaultPluginManager {
    *   An indexed array of cache tags.
    */
   public function getCacheTags() {
-    return [Bootstrap::CACHE_TAG];
+    return [Materialize::CACHE_TAG];
   }
 
   /**

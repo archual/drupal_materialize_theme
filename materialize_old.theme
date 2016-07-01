@@ -33,6 +33,8 @@ use Drupal\Core\Url;
  *
  * @see page.tpl.php
  */
+
+
 function materialize_preprocess_page(&$variables) {
   // Add information about the number of sidebars.
   $variables['content_column_attributes'] = new Attribute();

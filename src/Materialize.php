@@ -130,6 +130,35 @@ class Materialize {
   }
 
   /**
+   * Returns a specific Material Icons font.
+   *
+   * @param string $name
+   *   The icon name.
+   *
+   * @return array
+   *   The render containing the icon defined by $name, $default value if
+   *   icon does not exist or returns NULL if no icon could be rendered.
+   */
+  public static function material_icons_font($name) {
+    $icon = [];
+
+    // Ensure the icon specified is a valid Material Icons .
+    if (in_array($name, self::material_icons())) {
+      $icon = [
+        '#type' => 'html_tag',
+        '#tag' => 'i',
+        '#value' => $name,
+        '#attributes' => [
+          'class' => ['material-icons'],
+          'aria-hidden' => 'true',
+        ],
+      ];
+    }
+
+    return $icon;
+  }
+
+  /**
    * Initializes the active theme.
    */
   final public static function initialize() {
@@ -149,6 +178,74 @@ class Materialize {
       }
 
       $initialized = TRUE;
+    }
+  }
+
+  /**
+   * Manages theme alter hooks as classes and allows sub-themes to sub-class.
+   *
+   * @param string $function
+   *   The procedural function name of the alter (e.g. __FUNCTION__).
+   * @param mixed $data
+   *   The variable that was passed to the hook_TYPE_alter() implementation to
+   *   be altered. The type of this variable depends on the value of the $type
+   *   argument. For example, when altering a 'form', $data will be a structured
+   *   array. When altering a 'profile', $data will be an object.
+   * @param mixed $context1
+   *   (optional) An additional variable that is passed by reference.
+   * @param mixed $context2
+   *   (optional) An additional variable that is passed by reference. If more
+   *   context needs to be provided to implementations, then this should be an
+   *   associative array as described above.
+   */
+  public static function alter($function, &$data, &$context1 = NULL, &$context2 = NULL) {
+    static $theme;
+    if (!isset($theme)) {
+      $theme = self::getTheme();
+    }
+
+    // Immediately return if the active theme is not Bootstrap based.
+    if (!$theme->subthemeOf('bootstrap')) {
+      return;
+    }
+
+    // Extract the alter hook name.
+    $hook = Unicode::extractHook($function, 'alter');
+
+    // Handle form alters separately.
+    if (strpos($hook, 'form') === 0) {
+      $form_id = $context2;
+      if (!$form_id) {
+        $form_id = Unicode::extractHook($function, 'alter', 'form');
+      }
+
+      // Due to a core bug that affects admin themes, we should not double
+      // process the "system_theme_settings" form twice in the global
+      // hook_form_alter() invocation.
+      // @see https://drupal.org/node/943212
+      if ($context2 === 'system_theme_settings') {
+        return;
+      }
+
+      // Retrieve a list of form definitions.
+      $form_manager = new FormManager($theme);
+
+      /** @var \Drupal\bootstrap\Plugin\Form\FormInterface $form */
+      if ($form_manager->hasDefinition($form_id) && ($form = $form_manager->createInstance($form_id, ['theme' => $theme]))) {
+        $data['#submit'][] = [get_class($form), 'submitForm'];
+        $data['#validate'][] = [get_class($form), 'validateForm'];
+        $form->alterForm($data, $context1, $context2);
+      }
+    }
+    // Process hook alter normally.
+    else {
+      // Retrieve a list of alter definitions.
+      $alter_manager = new AlterManager($theme);
+
+      /** @var \Drupal\bootstrap\Plugin\Alter\AlterInterface $class */
+      if ($alter_manager->hasDefinition($hook) && ($class = $alter_manager->createInstance($hook, ['theme' => $theme]))) {
+        $class->alter($data, $context1, $context2);
+      }
     }
   }
 
