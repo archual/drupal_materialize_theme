@@ -79,6 +79,22 @@ class Materialize {
   }
 
   /**
+   * Returns the theme hook definition information.
+   *
+   * This base-theme's custom theme hook implementations. Never define "path"
+   * as this is automatically detected and added.
+   *
+   * @see \Drupal\meterialize\Plugin\Alter\ThemeRegistry::alter()
+   * @see meterialize_theme_registry_alter()
+   * @see meterialize_theme()
+   * @see hook_theme()
+   */
+  public static function getThemeHooks() {
+    $hooks = array();
+    return $hooks;
+  }
+  
+  /**
    * Adds a callback to an array.
    *
    * @param array $callbacks
@@ -159,6 +175,24 @@ class Materialize {
   }
 
   /**
+   * Provides additional variables to be used in elements and templates.
+   *
+   * @return array
+   *   An associative array containing key/default value pairs.
+   */
+  public static function extraVariables() {
+    return [
+      // @see https://drupal.org/node/2035055
+      'context' => [],
+
+      // @see https://drupal.org/node/2219965
+      'icon' => NULL,
+      'icon_position' => 'before',
+      'icon_only' => FALSE,
+    ];
+  }
+
+  /**
    * Initializes the active theme.
    */
   final public static function initialize() {
@@ -205,7 +239,7 @@ class Materialize {
     }
 
     // Immediately return if the active theme is not Bootstrap based.
-    if (!$theme->subthemeOf('bootstrap')) {
+    if (!$theme->subthemeOf('materialize')) {
       return;
     }
 
@@ -277,7 +311,7 @@ class Materialize {
     }
 
     // Add extra variables to all theme hooks.
-    foreach (Bootstrap::extraVariables() as $key => $value) {
+    foreach (Materialize::extraVariables() as $key => $value) {
       if (!isset($variables[$key])) {
         $variables[$key] = $value;
       }
