@@ -1,0 +1,26 @@
+core: 8.x
+type: theme
+base theme: materialize
+
+name: 'Materialize Sub-Theme (LESS/SASS)'
+description: 'Uses the Materialize framework LESS/SASS source files and must be compiled (not for beginners).'
+package: 'Materialize'
+
+regions:
+  header: 'Page header'
+  primary_nav: 'Primary navigation'
+  mobile_nav: 'Mobile navigation'
+  navigation: 'Navigation'
+  header: 'Top Bar'
+  highlighted: 'Highlighted'
+  help: 'Help'
+  content: 'Content'
+  sidebar_first: 'Primary'
+  sidebar_second: 'Secondary'
+  footer: 'Footer'
+  page_top: 'Page top'
+  page_bottom: 'Page bottom'
+
+libraries:
+  - 'THEMENAME/global-styling'
+  - 'THEMENAME/materialize-scripts'
