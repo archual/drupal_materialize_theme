@@ -1,4 +1,8 @@
 <!-- @file Project Page -->
+
+This project was be moved to Drupal.org repository and has a lot of changes.
+Please see here: https://www.drupal.org/project/materialize
+
 # Materialize
 
 > A modern responsive front-end framework based on Material Design. Materialize 
